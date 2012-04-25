@@ -12,9 +12,10 @@
 #endif
 #include <netinet/in.h>
 #include <arpa/inet.h>
+#ifdef HAVE_ALLOCA_H
 #include <alloca.h>
+#endif
 #include <sys/tree.h>
-
 #include "evhtp.h"
 
 static int                  _evhtp_request_parser_start(htparser * p);
