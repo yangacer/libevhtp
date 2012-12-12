@@ -1,3 +1,103 @@
+v1.1.7
+ o NULL check for evhtp_kvs_for_each (37f3864 Mark Ellzey)
+ o Parse body as the query args if content-type is url-encoded. (ee25209 Mark Ellzey)
+ o Added a write hook. (c32c0ed Mark Ellzey)
+
+v1.1.6
+ o Added __cplusplus into evthr (31e3973 Mark Ellzey)
+ o Use evhtp_hook_generic_cb function pointer prototype when setting a hook (59f01f3 Gian-Paolo Musumeci)
+ o ISO C fixes. (d1627f7 Mark Ellzey)
+ o ISO C fixes. (5be2662 Mark Ellzey)
+ o Renaming evhtp_hook_generic_cb to evhtp_hook, more ISO compliance. (60b3502 Mark Ellzey)
+ o Removing strict flags from BaseConfig. (bdc6265 Mark Ellzey)
+
+v1.1.5
+ o Don't treat non hex chars as errors. (d8c584d Mark Ellzey)
+ o If non hex, replace idx-1 with % (2783983 Mark Ellzey)
+ o Fix off-by-one in parse_query. (86881c1 Mark Ellzey)
+ o Do not use dynamically allocated timevals in evhtp_t. (3398442 Marcus Sundberg)
+ o Only initialize status_code_tree once. (da64395 Marcus Sundberg)
+ o Add evhtp_free() matching evhtp_new(). (60b141a Marcus Sundberg)
+ o (evhtp_callback_free): Free hooks as well, if set. (6fff598 Marcus Sundberg)
+ o (evhtp_callback_free): Free regexp pointer, not only regexp. (ab9adc6 Marcus Sundberg)
+ o (evthr_pool_stop): Do not read queue entry after freeing. (f7cc5f2 Marcus Sundberg)
+ o Use TAILQ_FOREACH_SAFE() in evhthr_pool_free() as well. (5c2adcc Marcus Sundberg)
+ o (evhtp_free): Stop and free thread pool, if started. (f13c207 Marcus Sundberg)
+ o Use libevent signal handling instead of signal() in test.c (e0b68b4 Marcus Sundberg)
+ o Properly deallocate resources in test programs. (ea1bd57 Marcus Sundberg)
+ o Add test_vhost to .gitignore (2a596c2 Marcus Sundberg)
+ o Fix issue where SSL is not disabled if not found. (6f25292 Mark Ellzey)
+ o Forgot LIBEVENT_OPENSSL_LIBRARY (5a933c7 Mark Ellzey)
+ o add upport multiline header values. (325c5c7 Mark Ellzey)
+
+v1.1.4
+ o Fixed potential deadlock - reported by zhangpeihao (36ee722 Mark Ellzey)
+ o Removing conflicting code from master branch. (51feaa9 Mark Ellzey)
+ o Assure SSL is disabled if not found. (d4f3f35 Mark Ellzey)
+
+v1.1.3
+ o Added evhtp_unbind_socket() (9c9b508 Mark Ellzey)
+ o Fixed issue with query argument decoding. (8ff9cf3 Mark Ellzey)
+ o Fix issue 53, error on LF without CR's (d51b526 Mark Ellzey)
+
+v1.1.2
+ o Manual verification modes for SNI vhosts. (5f9b3a5 Mark Ellzey)
+
+v1.1.1
+ o Added max-body functionality. (7f0052a Mark Ellzey)
+ o Added evhtp_set_max_keepalive_requests() (503ef28 Mark Ellzey)
+ o inherit parent settings when adding vhosts. (c66161b Mark Ellzey)
+ o Check for NULL before request status switch/case (f943a41 Mark Ellzey)
+ o call tlsext_servername_callback in bind_sockaddr (d1b5433 Mark Ellzey)
+ o Swap callback finder for path+file first. (2c30003 Mark Ellzey)
+ o Disable BEV_WRITE when htparser_run() is active (414814a Mark Ellzey)
+
+v1.1.0
+ o Add ability for rules to be ordered. (ad8c468 Mark Ellzey)
+ o Cleanup the old rule code. (fbfda73 Mark Ellzey)
+ o Fixed missing variable in callback_find (4eb5e87 Mark Ellzey)
+
+v1.0.1
+ o Fixes to make coverity happy. (6776d85 Mark Ellzey)
+ o Add support for empty header values. (7ec160f Mark Ellzey)
+
+v1.0.0
+ o Added some function documentation. (adc3ac6 Mark Ellzey)
+ o Check for null deref on request check. (a722fc4 Mark Ellzey)
+ o Fix for state set override for headers. (87fb859 Mark Ellzey)
+ o No need for null checks before free(). (7783ca2 Mark Ellzey)
+ o Bumping this up to 1.0.0 since it's been in production for a while.
+
+v0.4.17
+ o Added cmake option for disabling regex. (5ab2e4b Mark Ellzey)
+ o Cleanup compiler warnings. (770a344 Mark Ellzey)
+ o Fixed EVHTP_DISABLE_SSL compile. (e088f2b Mark Ellzey)
+
+v0.4.16
+ o Use POSIX 200112 for *NIX based builds. (09dbb0f Mark Ellzey)
+ o Drain before letting ownership change. (cc50f84 Mark Ellzey)
+ o jfkdal (5817bd3 Mark Ellzey)
+ o Document evhtp_set_timeouts(). (acc3ed2 Mark Ellzey)
+
+v0.4.15
+ o Override global timeouts on a per-connection basis. (156f5ef Mark Ellzey)
+ o Use evhtp_connection_set_timeouts in accept. (8eb5aa9 Mark Ellzey)
+ o Remove use for alloca.h (339f9f2 Mark Ellzey)
+ o Added a max-backlog for evthr/pools (e8ac1f9 Mark Ellzey)
+ o Added evthr max backlog options. (a44d1c0 Mark Ellzey)
+ o Initial commit of vhost feature. (8fb43e0 Mark Ellzey)
+ o SSL SNI support. (4dcc68e Mark Ellzey)
+ o Added test_vhost.c (c5a698e Mark Ellzey)
+ o _evhtp_ssl_servername now uses wildcard matching. (00d0488 Mark Ellzey)
+ o Added vhost aliases functionality. (bf5766f Mark Ellzey)
+ o Readd inc/dec counter for evthr. (022ecf3 Mark Ellzey)
+ o Make evhtp_request_free public. (9046466 Mark Ellzey)
+ o Added a EVHTP_RES_USER evhtp_res type. (6b41cee Mark Ellzey)
+ o Add support for ECDH ciphers (via cfg->named_curve string) (131cae3 b)
+ o finding cbs/hook additions, hostname parse hooks (361a068 Mark Ellzey)
+ o Optimizations. (caddf10 Mark Ellzey)
+ o hook_on_hdrs_complete runs before last LF (2f77428 Mark Ellzey)
+
 v0.4.14
  o Added example and documentation on proper thread-safe design with evhtp. (154017e Mark Ellzey)
  o Added glob/wildcard callback patterns. (d33a416 Mark Ellzey)

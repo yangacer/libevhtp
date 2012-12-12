@@ -208,27 +208,51 @@ main(int argc, char ** argv) {
         .on_msg_complete    = _on_msg_end
     };
 
-    const char  * test_1 = "GET / HTTP/1.0\r\n\r\n";
-    const char  * test_2 = "GET /hi?a=b&c=d HTTP/1.1\r\n\r\n";
-    const char  * test_3 = "GET /hi/die/?a=b&c=d HTTP/1.1\r\n\r\n";
-    const char  * test_4 = "POST /fjdls HTTP/1.0\r\n"
-                           "Content-Length: 4\r\n"
-                           "\r\n"
-                           "abcd";
-    const char * test_7 = "POST /derp HTTP/1.1\r\n"
-                          "Transfer-Encoding: chunked\r\n\r\n"
-                          "1e\r\nall your base are belong to us\r\n"
-                          "0\r\n"
-                          "\r\n\0";
-    const char * test_8 = "GET /DIE HTTP/1.1\r\n"
-                          "HERP: DE\r\n"
-                          "\tRP\r\nthings:stuff\r\n\r\n";
-    const char * test_9 = "GET /big_content_len HTTP/1.1\r\n"
-                          "Content-Length: 18446744073709551615\r\n\r\n";
+    const char  * test_1                = "GET / HTTP/1.0\r\n\r\n";
+    const char  * test_2                = "GET /hi?a=b&c=d HTTP/1.1\r\n\r\n";
+    const char  * test_3                = "GET /hi/die/?a=b&c=d HTTP/1.1\r\n\r\n";
+    const char  * test_4                = "POST /fjdls HTTP/1.0\r\n"
+                                          "Content-Length: 4\r\n"
+                                          "\r\n"
+                                          "abcd";
+    const char * test_7                 = "POST /derp HTTP/1.1\r\n"
+                                          "Transfer-Encoding: chunked\r\n\r\n"
+                                          "1e\r\nall your base are belong to us\r\n"
+                                          "0\r\n"
+                                          "\r\n\0";
+    const char * test_8                 = "GET /DIE HTTP/1.1\r\n"
+                                          "HERP: DE\r\n"
+                                          "\tRP\r\nthings:stuff\r\n\r\n";
+    const char * test_9                 = "GET /big_content_len HTTP/1.1\r\n"
+                                          "Content-Length: 18446744073709551615\r\n\r\n";
 
-    const char * test_fail   = "GET /JF HfD]\r\n\r\n";
-    const char * test_resp_1 = "HTTP/1.0 200 OK\r\n"
-                               "Stuff: junk\r\n\r\n";
+    const char * test_fail              = "GET /JF HfD]\r\n\r\n";
+    const char * test_resp_1            = "HTTP/1.0 200 OK\r\n"
+                                          "Stuff: junk\r\n\r\n";
+    const char * test_empty_header      = "GET /empty_header HTTP/1.1\r\n"
+                                          "Empty: \r\n"
+                                          "Stuff: junk\r\n\r\n";
+    const char * test_resp_empty_header = "HTTP/1.1 200 OK\r\n"
+                                          "response Empty: \r\n"
+                                          "Things: junk\r\n\r\n";
+
+    const char * test_no_cr             = "GET /no_cr HTTP/1.1\n"
+                                          "Host: stuff\n"
+                                          "Things: blah\n\n";
+    const char * test_no_hdr_cr         = "GET /no_hdr_cr HTTP/1.1\r\n"
+                                          "Host: things\n"
+                                          "Stuff: blah\n\n";
+    const char * test_no_hdr_cr_end     = "GET /no_hdr_cr_end HTTP/1.1\r\n"
+                                          "Host: blah\r\n"
+                                          "things: stuff\n\n\r\n";
+    const char * test_multiline         = "GET /multi HTTP/1.1\r\n"
+                                          "Header:    foo\r\n"
+                                          "\tbar\r\n"
+                                          "\tbaz\r\n"
+                                          "key: val\r\n\r\n";
+    const char * test_bad_body          = "HTTP/1.1 200\r\n"
+                                          "Content-Length: 6230461615\r\n\r\n"
+                                          "1234567890 moredata";
 
     _test(p, &hooks, test_resp_1, htp_type_response);
     _test(p, &hooks, test_1, htp_type_request);
@@ -239,6 +263,13 @@ main(int argc, char ** argv) {
     _test(p, &hooks, test_8, htp_type_request);
     _test(p, &hooks, test_9, htp_type_request);
     _test(p, &hooks, test_fail, htp_type_request);
+    _test(p, &hooks, test_empty_header, htp_type_request);
+    _test(p, &hooks, test_resp_empty_header, htp_type_response);
+    _test(p, &hooks, test_no_cr, htp_type_request);
+    _test(p, &hooks, test_no_hdr_cr, htp_type_request);
+    _test(p, &hooks, test_no_hdr_cr_end, htp_type_request);
+    _test(p, &hooks, test_multiline, htp_type_request);
+    _test(p, &hooks, test_bad_body, htp_type_response);
 
     _test_fragments(p, &hooks, test_fragment_1, htp_type_request);
     _test_fragments(p, &hooks, test_fragment_2, htp_type_request);

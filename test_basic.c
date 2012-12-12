@@ -7,21 +7,34 @@
 
 void
 testcb(evhtp_request_t * req, void * a) {
-    evbuffer_add_reference(req->buffer_out, "foobar", 6, NULL, NULL);
+    const char * str = a;
+
+    evbuffer_add_printf(req->buffer_out, "%s", str);
     evhtp_send_reply(req, EVHTP_RES_OK);
 }
 
 int
 main(int argc, char ** argv) {
-    evbase_t * evbase = event_base_new();
-    evhtp_t  * htp    = evhtp_new(evbase, NULL);
+    evbase_t         * evbase = event_base_new();
+    evhtp_t          * htp    = evhtp_new(evbase, NULL);
+    evhtp_callback_t * cb_1   = NULL;
+    evhtp_callback_t * cb_2   = NULL;
 
-    evhtp_set_cb(htp, "/test", testcb, NULL);
+    cb_1 = evhtp_set_cb(htp, "/1/ping", testcb, "one");
+    cb_2 = evhtp_set_cb(htp, "/1/ping.json", testcb, "two");
 #ifndef EVHTP_DISABLE_EVTHR
     evhtp_use_threads(htp, NULL, 4, NULL);
 #endif
     evhtp_bind_socket(htp, "0.0.0.0", 8081, 1024);
+
     event_base_loop(evbase, 0);
+
+    evhtp_unbind_socket(htp);
+    evhtp_callback_free(cb_2);
+    evhtp_callback_free(cb_1);
+    evhtp_free(htp);
+    event_base_free(evbase);
+
     return 0;
 }
 
